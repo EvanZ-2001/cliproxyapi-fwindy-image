@@ -44,7 +44,7 @@ cd cliproxyapi-fwindy-image
 ```bash
 cp config.example.yaml config.yaml
 cp .env.example .env
-mkdir -p auths logs
+mkdir -p auths logs static
 ```
 
 根据你的实际需求编辑 `config.yaml`，例如 API key、管理 API、provider、代理等
@@ -101,6 +101,7 @@ CLI_PROXY_IMAGE=ghcr.io/evanz-2001/cliproxyapi-fwindy:v7.1.17 docker compose up 
 ./config.yaml -> /CLIProxyAPI/config.yaml
 ./auths       -> /root/.cli-proxy-api
 ./logs        -> /CLIProxyAPI/logs
+./static      -> /CLIProxyAPI/static
 ```
 
 如果需要自定义路径，可以在 `.env` 中设置：
@@ -109,10 +110,14 @@ CLI_PROXY_IMAGE=ghcr.io/evanz-2001/cliproxyapi-fwindy:v7.1.17 docker compose up 
 CLI_PROXY_CONFIG_PATH=/opt/cliproxyapi/config.yaml
 CLI_PROXY_AUTH_PATH=/opt/cliproxyapi/auths
 CLI_PROXY_LOG_PATH=/opt/cliproxyapi/logs
+CLI_PROXY_STATIC_PATH=/opt/cliproxyapi/static
 ```
 
 运行 `docker compose up` 前请确保 `config.yaml` 已经存在，否则 Docker 可能会在该路径
 创建一个目录，导致配置挂载不符合预期。
+
+如果 `static/management.html` 已存在，CLIProxyAPI 会直接提供管理面板静态文件。如果它
+不存在，CLIProxyAPI 会在首次访问时根据当前网络和代理配置尝试下载管理面板。
 
 ## 更新
 

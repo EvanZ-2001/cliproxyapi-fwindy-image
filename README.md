@@ -48,7 +48,7 @@ Create local configuration files before starting the container:
 ```bash
 cp config.example.yaml config.yaml
 cp .env.example .env
-mkdir -p auths logs
+mkdir -p auths logs static
 ```
 
 Edit `config.yaml` for your API keys, management settings, providers, and other
@@ -105,6 +105,7 @@ The default `compose.yml` uses these host paths:
 ./config.yaml -> /CLIProxyAPI/config.yaml
 ./auths       -> /root/.cli-proxy-api
 ./logs        -> /CLIProxyAPI/logs
+./static      -> /CLIProxyAPI/static
 ```
 
 Override them in `.env` when needed:
@@ -113,10 +114,15 @@ Override them in `.env` when needed:
 CLI_PROXY_CONFIG_PATH=/opt/cliproxyapi/config.yaml
 CLI_PROXY_AUTH_PATH=/opt/cliproxyapi/auths
 CLI_PROXY_LOG_PATH=/opt/cliproxyapi/logs
+CLI_PROXY_STATIC_PATH=/opt/cliproxyapi/static
 ```
 
 Make sure `config.yaml` exists before running `docker compose up`; otherwise
 Docker may create a directory at that path.
+
+If `static/management.html` exists, CLIProxyAPI serves the bundled management
+panel directly. If it does not exist, CLIProxyAPI attempts to download the panel
+on first access by using the configured network/proxy settings.
 
 ## Upgrade
 
