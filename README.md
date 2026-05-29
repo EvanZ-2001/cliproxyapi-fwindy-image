@@ -13,9 +13,11 @@ It is intended for deployment machines where building CLIProxyAPI from Go
 source is too slow or too resource-intensive. The included `compose.yml` pulls
 the prebuilt image from GHCR and does not contain a local `build:` section.
 
-The scheduled workflow resolves the latest `v*` tag from
-`Fwindy/CLIProxyAPI`, refreshes the models catalog from
-`router-for-me/models`, and pushes multi-architecture images for:
+Every hour, the scheduled workflow resolves the latest `v*` tag from
+`Fwindy/CLIProxyAPI` and checks whether the matching GHCR image tag already
+exists. It only builds when that image tag is missing. When a build is needed,
+the workflow refreshes the models catalog from `router-for-me/models` and
+pushes multi-architecture images for:
 
 - `linux/amd64`
 - `linux/arm64`
@@ -140,4 +142,5 @@ commands.
 
 Run the `build-fwindy-cliproxyapi-image` workflow manually. Leave `ref` empty
 to build the latest `v*` tag, or set it to a tag, branch, or commit from
-`Fwindy/CLIProxyAPI`.
+`Fwindy/CLIProxyAPI`. Manual runs always build the requested ref, even when the
+matching image tag already exists.

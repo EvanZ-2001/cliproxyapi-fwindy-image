@@ -11,7 +11,8 @@ ghcr.io/evanz-2001/cliproxyapi-fwindy
 它的目标是让性能较弱的机器不再从 Go 源码构建 CLIProxyAPI。仓库里的
 `compose.yml` 只会拉取 GHCR 上的预构建镜像，不包含本地 `build:` 配置。
 
-GitHub Actions 会定时解析 `Fwindy/CLIProxyAPI` 的最新 `v*` tag，刷新
+GitHub Actions 会每小时解析一次 `Fwindy/CLIProxyAPI` 的最新 `v*` tag，并检查
+GHCR 上是否已经存在对应镜像标签。只有对应镜像标签不存在时，才会刷新
 `router-for-me/models` 的模型目录，然后构建并推送以下架构的镜像：
 
 - `linux/amd64`
@@ -134,4 +135,4 @@ docker compose up -d
 
 在 GitHub Actions 页面手动运行 `build-fwindy-cliproxyapi-image` workflow。`ref` 留空
 时会构建 `Fwindy/CLIProxyAPI` 最新 `v*` tag；也可以填写 Fwindy 仓库中的某个 tag、
-branch 或 commit。
+branch 或 commit。手动触发始终会构建指定 ref，即使 GHCR 上已经存在同名镜像标签。
